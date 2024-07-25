@@ -2,9 +2,10 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     height: 100vh;
+    flex-direction: column;
 }
 
 #GridContainer {
@@ -13,7 +14,6 @@ body {
     height: 800px;
     display: flex;
     flex-wrap: wrap;
-    margin: auto;
 }
 
 .gridSquare {
@@ -25,4 +25,20 @@ body {
 
 .hovered {
     background-color: lightslategray;
+}
+
+#ResizeGridBtn {
+    width: 15%;
+    height: 36px;
+    background-color: rgb(65, 109, 255);
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#ResizeGridBtn:hover {
+    background-color: rgb(86, 125, 254);
 }
