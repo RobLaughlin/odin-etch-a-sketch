@@ -1,7 +1,24 @@
-const NUM_SQUARES = 16*16;
+let totalSquares = 16*16;
+let currentHue = 0;
 
-function changeBgColor(e) {
-    e.target.classList.add("hovered");
+function changeBgColor(e, hue = currentHue, saturation = "100%", lightness="50%", msUpdate=3000, updateHue=true) {
+    e.target.style.backgroundColor = `hsl(${hue}, ${saturation}, ${lightness})`;
+
+    // We only want to update the hue on the first call.
+    // When animation frames are requested, don't update the hue any further.
+    if (updateHue) {
+        currentHue += Math.round(360 / totalSquares);
+        currentHue = currentHue % 360;
+    }
+
+
+    // Fade to white
+    const newLightness = Math.ceil(50 + 50*((3000-msUpdate) / 3000));
+    const lightnessStr = newLightness.toString() + '%';
+    const frameMs = (1/60*1000) // 60 FPS
+    if (msUpdate > 0) {
+        requestAnimationFrame(() => {changeBgColor(e, hue, saturation, lightnessStr, msUpdate-frameMs, false)});
+    }
 }
 
 function resizeGrid() {
@@ -26,7 +43,9 @@ function resizeGrid() {
         square.style.width = ((1 / Math.sqrt(gridSize)) * 100).toString() + '%';
         gridSquares.push(square);
     }
+    
     gridContainer.replaceChildren(...gridSquares);
+    currentHue = 0;
 }
 
 function injectGrid(numSquares) {
@@ -40,4 +59,4 @@ function injectGrid(numSquares) {
     }
 }
 
-injectGrid(NUM_SQUARES);
+injectGrid(totalSquares);
