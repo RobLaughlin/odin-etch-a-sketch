@@ -1,7 +1,14 @@
+// How long it takes for a grid square to fade to white
+const MS_UPDATE = 3000;
+
+// How often to update the fade effect
+const FPS = 60;
+const FRAME_MS = (1 / FPS) * 1000;
+
 let totalSquares = 16*16;
 let currentHue = 0;
 
-function changeBgColor(e, hue = currentHue, saturation = "100%", lightness="50%", msUpdate=3000, updateHue=true) {
+function changeBgColor(e, hue = currentHue, saturation = "100%", lightness="50%", msUpdate=MS_UPDATE, updateHue=true) {
     e.target.style.backgroundColor = `hsl(${hue}, ${saturation}, ${lightness})`;
 
     // We only want to update the hue on the first call.
@@ -11,13 +18,11 @@ function changeBgColor(e, hue = currentHue, saturation = "100%", lightness="50%"
         currentHue = currentHue % 360;
     }
 
-
     // Fade to white
-    const newLightness = Math.ceil(50 + 50*((3000-msUpdate) / 3000));
+    const newLightness = Math.ceil(50 + 50*((MS_UPDATE-msUpdate) / MS_UPDATE));
     const lightnessStr = newLightness.toString() + '%';
-    const frameMs = (1/60*1000) // 60 FPS
     if (msUpdate > 0) {
-        requestAnimationFrame(() => {changeBgColor(e, hue, saturation, lightnessStr, msUpdate-frameMs, false)});
+        requestAnimationFrame(() => {changeBgColor(e, hue, saturation, lightnessStr, msUpdate-FRAME_MS, false)});
     }
 }
 
@@ -43,7 +48,7 @@ function resizeGrid() {
         square.style.width = ((1 / Math.sqrt(gridSize)) * 100).toString() + '%';
         gridSquares.push(square);
     }
-    
+
     gridContainer.replaceChildren(...gridSquares);
     currentHue = 0;
 }
