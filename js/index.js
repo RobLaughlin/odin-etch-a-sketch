@@ -1,4 +1,4 @@
-const NUM_SQUARES = 16;
+const NUM_SQUARES = 16*16;
 
 function injectGrid(numSquares) {
     let gridContainer = document.getElementById("GridContainer");
